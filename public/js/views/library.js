@@ -2,89 +2,109 @@ import { supabase } from '../supabase.js';
 
 export async function renderLibrary(container) {
     container.innerHTML = `
-        <h1 class="mb-4">Perpustakaan Musik</h1>
-        <p class="text-muted">Koleksi lagu lokal Anda.</p>
+        <div class="page-header fade-in-up">
+            <h1>Perpustakaan Musik</h1>
+            <p>Koleksi lagu pribadi Anda</p>
+        </div>
         
-        <div id="library-loading" class="text-center mt-6">
+        <div id="library-loading" class="empty-state fade-in-up" style="min-height: 40vh;">
+            <div class="empty-state-icon animate-pulse">🎵</div>
             <p class="text-muted">Memuat daftar lagu...</p>
         </div>
         
-        <div id="library-content" style="display: none;" class="mt-6">
-            <div class="glass-panel" style="padding: 0; overflow: hidden;">
-                <table class="w-100" style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-size: 0.9rem;">
-                            <th style="padding: 1rem;">#</th>
-                            <th style="padding: 1rem;">Judul</th>
-                            <th style="padding: 1rem;">Album</th>
-                            <th style="padding: 1rem; text-align: right;">Durasi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="library-table-body">
-                        <!-- Data akan dimasukkan di sini -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <div id="library-empty" class="glass-panel" style="display: none; padding: 3rem; margin-top: 2rem; text-align: center;">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">🎵</div>
-            <h3 class="text-main">Library Kosong</h3>
-            <p class="text-muted mt-2">Jalankan <code>python -m scanner scan --path "Folder Musik"</code> di komputermu untuk mengunggah lagu.</p>
-        </div>
+        <div id="library-content" style="display: none;"></div>
+        <div id="library-empty" style="display: none;"></div>
     `;
 
     try {
-        // Menggunakan view v_tracks seperti di T2.3
         const { data: tracks, error } = await supabase
             .from('v_tracks')
-            .select('*')
+            .select('id, title, artist_name, album_name, duration_ms, track_no, storage_path, cover_path, upload_status')
             .eq('upload_status', 'uploaded')
             .order('artist_name', { ascending: true })
             .order('album_name', { ascending: true })
             .order('track_no', { ascending: true })
-            .limit(50); // Pagination tahap 1
-
-        if (error) throw error;
+            .limit(50);
 
         document.getElementById('library-loading').style.display = 'none';
 
+        if (error) throw error;
+
         if (!tracks || tracks.length === 0) {
             document.getElementById('library-empty').style.display = 'block';
+            document.getElementById('library-empty').innerHTML = `
+                <div class="empty-state fade-in-up">
+                    <div class="empty-state-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+                            <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                        </svg>
+                    </div>
+                    <h2>Library Masih Kosong</h2>
+                    <p>Jalankan Scanner Lokal di komputermu untuk mengunggah koleksi musik.</p>
+                    <div class="glass-panel" style="margin-top: 1.5rem; padding: 1rem 1.5rem; font-size: 0.85rem;">
+                        <code>python -m scanner scan --path "D:/Musik"</code>
+                    </div>
+                </div>
+            `;
             return;
         }
 
-        const tbody = document.getElementById('library-table-body');
-        document.getElementById('library-content').style.display = 'block';
+        const contentEl = document.getElementById('library-content');
+        contentEl.style.display = 'block';
+        
+        // Header kolom
+        let html = `
+            <div class="glass-panel fade-in-up" style="padding: 0.5rem 0; overflow: hidden;">
+                <div class="track-row" style="cursor: default; opacity: 0.5; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <span class="track-row-num">#</span>
+                    <span class="track-row-info">Judul</span>
+                    <span class="track-row-album">Album</span>
+                    <span class="track-row-duration">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </span>
+                </div>
+        `;
 
-        tracks.forEach((track, index) => {
-            const tr = document.createElement('tr');
-            tr.className = 'track-row';
-            tr.style.cssText = 'border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; cursor: pointer;';
-            tr.onmouseover = () => tr.style.background = 'rgba(255,255,255,0.05)';
-            tr.onmouseout = () => tr.style.background = 'transparent';
-            
-            // Format waktu ms ke mm:ss
-            let durationStr = "-:--";
+        tracks.forEach((track, i) => {
+            let dur = '--:--';
             if (track.duration_ms) {
                 const s = Math.floor(track.duration_ms / 1000);
-                durationStr = Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+                dur = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
             }
 
-            tr.innerHTML = `
-                <td style="padding: 1rem; color: var(--text-muted);">${index + 1}</td>
-                <td style="padding: 1rem;">
-                    <div style="font-weight: 500; color: var(--text-main);">${track.title}</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted);">${track.artist_name || 'Unknown Artist'}</div>
-                </td>
-                <td style="padding: 1rem; color: var(--text-muted);">${track.album_name || 'Unknown Album'}</td>
-                <td style="padding: 1rem; text-align: right; color: var(--text-muted);">${durationStr}</td>
+            html += `
+                <div class="track-row" data-track-id="${track.id}" style="animation: fadeInUp 0.3s ${i * 0.03}s both;">
+                    <span class="track-row-num">${i + 1}</span>
+                    <div class="track-row-info">
+                        <div class="track-row-title">${track.title}</div>
+                        <div class="track-row-artist">${track.artist_name || 'Unknown Artist'}</div>
+                    </div>
+                    <span class="track-row-album">${track.album_name || ''}</span>
+                    <span class="track-row-duration">${dur}</span>
+                </div>
             `;
-            tbody.appendChild(tr);
         });
 
+        html += `</div>`;
+        contentEl.innerHTML = html;
+
     } catch (e) {
-        console.error("Gagal memuat library:", e);
-        container.innerHTML += `<p style="color: #ff6b6b; margin-top: 1rem;">Gagal memuat daftar lagu: ${e.message}</p>`;
+        console.error('Gagal memuat library:', e);
+        document.getElementById('library-loading').style.display = 'none';
+        document.getElementById('library-empty').style.display = 'block';
+        document.getElementById('library-empty').innerHTML = `
+            <div class="empty-state fade-in-up">
+                <div class="empty-state-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+                        <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                    </svg>
+                </div>
+                <h2>Library Masih Kosong</h2>
+                <p>Jalankan Scanner Lokal di komputermu untuk mengunggah koleksi musik.</p>
+                <div class="glass-panel" style="margin-top: 1.5rem; padding: 1rem 1.5rem; font-size: 0.85rem;">
+                    <code>python -m scanner scan --path "D:/Musik"</code>
+                </div>
+            </div>
+        `;
     }
 }
