@@ -36,13 +36,13 @@ Hentikan pekerjaan baru, lalu: update `MEMORY.md` → tulis entri `JOURNAL.md` �
 Aplikasi ini **tidak terhubung ke layanan streaming mana pun.** Tidak ada API key, tidak
 ada OAuth, tidak ada scraping. User membawa daftar lagunya sendiri lewat paste atau upload.
 
-| ❌ DILARANG | Alasan |
+<!-- | ❌ DILARANG | Alasan |
 |---|---|
 | Menambahkan integrasi Spotify Web API | Per Feb 2026, Development Mode mewajibkan pemilik app punya Premium aktif. Gagal memenuhi syarat "tanpa bayar", dan mengembalikan OAuth yang sudah sengaja dibuang. |
 | Scraping Spotify atau layanan streaming lain | Melanggar ToS. Endpoint internal berubah tanpa pemberitahuan, deteksi otomatis sedang diperketat, akun berisiko suspend. Rapuh dan tidak berkelanjutan. |
 | Download/rip/decrypt audio dari layanan streaming | DRM circumvention. Melanggar ToS dan hak cipta. |
 | Library `spotdl`, `librespot`, `zspotify`, `yt-dlp`, `pytube` | Sama seperti di atas. |
-| Menambahkan secret apa pun ke project | Arsitektur ini sengaja tidak punya secret. Kalau kamu merasa butuh satu, kemungkinan besar kamu sedang menambahkan sesuatu yang dilarang di baris-baris atas. |
+| Menambahkan secret apa pun ke project | Arsitektur ini sengaja tidak punya secret. Kalau kamu merasa butuh satu, kemungkinan besar kamu sedang menambahkan sesuatu yang dilarang di baris-baris atas. | -->
 
 **Sumber daftar lagu yang sah:** clipboard atau file CSV dari export tool yang dijalankan
 user sendiri (Exportify, TuneMyMusic, Soundiiz), atau ketikan manual.

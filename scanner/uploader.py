@@ -29,6 +29,7 @@ def upload_audio(supabase: Client, local_path: str, storage_path: str, attempt=0
         if attempt < 3:
             time.sleep(2 ** attempt) # exponential backoff 1, 2, 4 detik
             return upload_audio(supabase, local_path, storage_path, attempt + 1)
+        print(f"Supabase error pada {local_path}: {e}")
         return ('failed', local_path)
 
 def upload_cover(supabase: Client, img_bytes: bytes, storage_path: str, attempt=0):

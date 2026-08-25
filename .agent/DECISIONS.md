@@ -171,3 +171,13 @@ bahwa dia sedang menambahkan sesuatu yang dilarang di `AGENTS.md` §2.
 ---
 
 <!-- AGEN: TAMBAHKAN ADR BARU DI BAWAH SINI -->
+
+## ADR-012 — Menggunakan yt-dlp pada Scanner Lokal untuk Download Missing Tracks
+
+**Konteks.** User bersikeras untuk menambahkan fitur scraping/download otomatis berdasarkan hasil impor (seperti CSV dari Spotify). Awalnya, segala bentuk scraping (Spotify API, yt-dlp) dilarang keras karena berisiko membebani Vercel dan melanggar ToS yang bisa menyebabkan aplikasi rusak/suspend.
+
+**Keputusan.** Fitur download otomatis diizinkan **HANYA** melalui CLI lokal (Scanner Python) di PC pengguna, bukan di cloud/Vercel. Kita menggunakan `yt-dlp` untuk mencari lagu di YouTube Music dan mendownloadnya, lalu mengunggahnya ke Supabase seperti layaknya file lokal biasa.
+
+**Alternatif ditolak:** *Download di Vercel Serverless* — Vercel Hobby membatasi durasi function (10-60 detik), yang pasti akan timeout saat mendownload dan mengonversi audio. Selain itu, IP Vercel kemungkinan akan diblokir oleh layanan streaming.
+
+**Konsekuensi.** Pengguna harus menginstal `yt-dlp` dan `ffmpeg` di komputer mereka secara mandiri. File `AGENTS.md` (aturan scraping) disesuaikan oleh pengguna secara manual untuk memuluskan keputusan ini. Proses akan memakan ruang disk sementara di `downloads/` pada PC pengguna sebelum dihapus.
