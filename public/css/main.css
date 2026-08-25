@@ -396,9 +396,102 @@ input::placeholder { color: rgba(255, 255, 255, 0.25); }
   background: rgba(139,92,246,0.05);
 }
 
-/* ===== Responsive ===== */
+/* ===== Mobile Menu Toggle ===== */
+.mobile-header {
+  display: none;
+  position: fixed; top: 0; left: 0; width: 100%;
+  height: 56px; z-index: 200;
+  background: rgba(8, 8, 14, 0.95);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  align-items: center; padding: 0 1rem; gap: 0.75rem;
+}
+.mobile-header .app-logo { width: 28px; height: 28px; border-radius: 8px; }
+.mobile-header h2 { font-size: 1.1rem; margin: 0; }
+
+.hamburger-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-main); padding: 0.5rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.hamburger-btn svg { width: 22px; height: 22px; }
+
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); z-index: 149;
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.sidebar-overlay.active { display: block; opacity: 1; }
+
+/* ===== Responsive: Tablet (<=1024px) ===== */
+@media (max-width: 1024px) {
+  .sidebar { width: 220px; min-width: 220px; padding: 1.25rem; }
+  .main-content { padding: 2rem 1.5rem; }
+  .player-extra { display: none; }
+  .player-controls { flex: 3; }
+  .player-progress { max-width: 100%; }
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+}
+
+/* ===== Responsive: Mobile (<=768px) ===== */
 @media (max-width: 768px) {
-  .sidebar { display: none; }
-  .main-content { padding: 1.5rem; }
+  .mobile-header { display: flex; }
+  
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 280px; z-index: 150;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding-top: 1.5rem;
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .main-content {
+    padding: 1.25rem;
+    padding-top: calc(56px + 1.25rem); /* space for mobile header */
+    padding-bottom: 100px;
+  }
+
+  .page-header h1 { font-size: 1.5rem; }
+
+  /* Player bar mobile */
+  .player-bar { height: 64px; padding: 0 0.75rem; }
+  .player-cover { width: 40px; height: 40px; }
+  .player-track-name { font-size: 0.8rem; }
+  .player-track-artist { font-size: 0.7rem; }
+  .player-controls { flex: unset; gap: 0.2rem; }
+  .player-progress { display: none; }
+  .player-buttons { gap: 0.75rem; }
+  .player-btn svg { width: 18px; height: 18px; }
+  .player-btn-play { width: 32px; height: 32px; }
+  .player-btn-play svg { width: 14px; height: 14px; }
+  .player-extra { display: none; }
+
+  /* Track rows */
+  .track-row { padding: 0.5rem 0.5rem; gap: 0.75rem; }
   .track-row-album { display: none; }
+  .track-row-num { width: 22px; font-size: 0.8rem; }
+
+  /* Import: stack kolom */
+  .import-grid { grid-template-columns: 1fr !important; }
+
+  /* Card grid */
+  .card-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .feature-card { padding: 1.25rem; }
+
+  /* Empty state */
+  .empty-state { padding: 2rem 1rem; min-height: 50vh; }
+  .empty-state-icon { width: 64px; height: 64px; border-radius: 16px; }
+}
+
+/* ===== Responsive: Small phone (<=400px) ===== */
+@media (max-width: 400px) {
+  .main-content { padding: 1rem; padding-top: calc(56px + 1rem); padding-bottom: 90px; }
+  .page-header h1 { font-size: 1.3rem; }
+  .player-bar { height: 56px; }
+  .player-cover { width: 36px; height: 36px; border-radius: 6px; }
+  .player-buttons { gap: 0.5rem; }
+  /* Sembunyikan shuffle & repeat di HP kecil */
+  .player-btn[title="Shuffle"],
+  .player-btn[title="Repeat"] { display: none; }
 }

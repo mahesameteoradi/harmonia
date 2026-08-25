@@ -5,7 +5,7 @@ export function renderImport(container) {
             <p>Bawa daftar lagumu dari layanan lain ke Harmonia</p>
         </div>
         
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;" class="fade-in-up" >
+        <div class="import-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;" >
             
             <!-- Paste Text -->
             <div class="glass-panel" style="padding: 1.5rem;">

@@ -10,9 +10,21 @@
 </head>
 <body>
 
+    <!-- Mobile Header (muncul hanya di HP) -->
+    <header class="mobile-header">
+        <button class="hamburger-btn" id="menu-toggle" aria-label="Toggle menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <img src="/media/logo.jpg" alt="Harmonia" class="app-logo">
+        <h2 class="text-gradient">Harmonia</h2>
+    </header>
+
+    <!-- Overlay (klik untuk tutup sidebar di HP) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     <div class="app-container">
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="brand-header">
                 <img src="/media/logo.jpg" alt="Harmonia" class="app-logo">
                 <h2 class="text-gradient" style="margin: 0; font-size: 1.25rem;">Harmonia</h2>
@@ -104,9 +116,30 @@
         
         initRouter();
         
+        // Logout
         document.getElementById('logout-btn').addEventListener('click', async (e) => {
             e.preventDefault();
             await supabase.auth.signOut();
+        });
+
+        // Mobile sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const menuBtn = document.getElementById('menu-toggle');
+
+        function openSidebar()  { sidebar.classList.add('open'); overlay.classList.add('active'); }
+        function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+        });
+        overlay.addEventListener('click', closeSidebar);
+
+        // Tutup sidebar setelah klik navigasi (di HP)
+        document.querySelectorAll('.nav-link[data-route]').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) closeSidebar();
+            });
         });
     </script>
 </body>
