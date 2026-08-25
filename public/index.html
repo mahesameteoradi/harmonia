@@ -3,11 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmonia</title>
+    <title>Harmonia - Library</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    <h1>Harmonia</h1>
-    <p>Music Player Pribadi</p>
-    <a href="/login.html">Login</a>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2 class="text-gradient mb-6">Harmonia</h2>
+            
+            <nav style="display: flex; flex-direction: column; gap: 1rem;">
+                <a href="#" style="color: var(--text-main); text-decoration: none; font-weight: 500;">🎵 Library</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">📝 Playlists</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">⬇️ Import</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: none; margin-top: auto;" id="logout-btn">🚪 Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1 class="mb-4">Perpustakaan Musik</h1>
+            <p class="text-muted">Koleksi musik Anda akan muncul di sini (T2.3).</p>
+            
+            <div class="glass-panel" style="padding: 2rem; margin-top: 2rem; text-align: center;">
+                <h3 class="text-muted">Library Kosong</h3>
+                <p class="mt-4">Jalankan scanner lokal untuk mengunggah musik Anda.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Player Bar -->
+    <footer class="player-bar">
+        <div style="flex: 1; display: flex; align-items: center; gap: 1rem;">
+            <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 8px;"></div>
+            <div>
+                <h4 style="margin: 0; font-size: 1rem;">Judul Lagu</h4>
+                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Nama Artis</p>
+            </div>
+        </div>
+        
+        <div style="flex: 2; text-align: center;">
+            <p class="text-muted" style="font-size: 0.9rem;">(Player Control Area - Phase 2)</p>
+        </div>
+        
+        <div style="flex: 1;"></div>
+    </footer>
+
+    <!-- Env Vars -->
+    <script src="/js/env.js"></script>
+    
+    <!-- Supabase & Auth Logic (ESM) -->
+    <script type="module">
+        import { supabase } from '/js/supabase.js';
+        import '/js/auth.js'; // Memuat fungsi checkAuth
+        
+        // Setup tombol logout
+        document.getElementById('logout-btn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            await supabase.auth.signOut();
+            // auth.js onAuthStateChange akan menangani redirect
+        });
+    </script>
 </body>
 </html>

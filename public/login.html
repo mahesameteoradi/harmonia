@@ -4,9 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Harmonia</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
-<body>
-    <h1>Login Harmonia</h1>
-    <p>Silakan login untuk mengakses library musik.</p>
+<body style="align-items: center; justify-content: center;">
+
+    <div class="glass-panel" style="width: 100%; max-width: 400px; padding: 2.5rem; text-align: center;">
+        <h1 class="text-gradient mb-4">Harmonia</h1>
+        <p class="mb-6">Masuk untuk mengakses perpustakaan musik pribadi Anda.</p>
+
+        <form id="login-form">
+            <div class="input-group" style="text-align: left;">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="nama@email.com" required autocomplete="email">
+            </div>
+            
+            <div class="input-group" style="text-align: left; margin-bottom: 2rem;">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="login-btn">
+                <span id="btn-text">Masuk</span>
+                <span id="loader" class="loader"></span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Env Vars -->
+    <script src="/js/env.js"></script>
+    
+    <!-- Supabase & Auth Logic (ESM) -->
+    <script type="module" src="/js/supabase.js"></script>
+    <script type="module" src="/js/auth.js"></script>
 </body>
 </html>

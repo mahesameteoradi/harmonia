@@ -20,7 +20,18 @@
 
 ---
 
-<!-- ENTRI BARU MULAI DI BAWAH GARIS INI -->
+## [2026-08-25] Sesi #1 — Selesai Fase 0 (UI & Auth)
+
+**Dikerjakan:** T0.1, T0.2, T0.3, T0.5, T0.6, T0.7
+**Hasil:** Setup Supabase dan Vercel selesai. Halaman login dengan desain Vanilla CSS (glassmorphism) dan logika otentikasi menggunakan supabase-js.
+**File berubah:** public/css/main.css, public/js/supabase.js, public/js/auth.js, public/index.html, public/login.html, TASKS.md, MEMORY.md
+**Cara tes:** Buka localhost:3000, pengguna akan dipaksa ke halaman login jika tidak memiliki sesi.
+**Masalah:** Sempat terjadi 404 dari Vercel karena index.html belum ada pada deploy T0.6.
+**Belum selesai:** -
+**Next:** T1.1 (Fase 1 - Scanner Lokal)
+**Commit:** (pending)
+
+---
 
 ## [2026-08-25] Sesi #0 — Bootstrap (arsitektur static + Supabase)
 

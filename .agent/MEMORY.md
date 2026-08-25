@@ -24,12 +24,12 @@ mana pun** — tidak ada API key, tidak ada OAuth, tidak ada scraping, tidak ada
 
 <!-- AGEN: UPDATE BLOK INI SETIAP AKHIR SESI -->
 
-- **Fase aktif:** Fase 0 — Infrastruktur (belum mulai)
+- **Fase aktif:** Fase 1 — Scanner Lokal (Fase 0 selesai)
 - **Task sedang dikerjakan:** —
-- **Task berikutnya:** T0.1
+- **Task berikutnya:** T1.1
 - **Blocker:** —
-- **Terakhir di-update:** (belum pernah)
-- **Commit terakhir:** (belum ada)
+- **Terakhir di-update:** 25 Agustus 2026
+- **Commit terakhir:** (Update T0.7 UI Login)
 
 ---
 
@@ -61,13 +61,13 @@ mana pun** — tidak ada API key, tidak ada OAuth, tidak ada scraping, tidak ada
 | `db/schema.sql` | 7 tabel + RLS + storage policy + view | ✅ ada |
 | `vercel.json` | Konfigurasi static, tanpa functions | ✅ ada |
 | `scripts/inject-env.js` | Suntik 2 env var ke frontend saat build | ✅ ada |
-| `public/js/supabase.js` | Inisialisasi client | ⬜ |
+| `public/js/supabase.js` | Inisialisasi client | ✅ ada |
 | `public/js/storage.js` | Signed URL + cache | ⬜ |
 | `public/js/player.js` | Audio engine + queue | ⬜ |
 | `public/js/parser.js` | Parse CSV / teks jadi daftar lagu | ⬜ |
 | `public/js/matcher.js` | Normalisasi + skoring | ⬜ |
 | `public/js/matcher.worker.js` | Matching di thread terpisah | ⬜ |
-| `public/js/ui.js` | Render + event binding | ⬜ |
+| `public/js/auth.js` | Auth login form + state change guard | ✅ ada |
 | `scanner/__main__.py` | CLI lokal | ⬜ |
 
 ---

@@ -9,13 +9,13 @@
 
 ## Fase 0 — Infrastruktur (1 sesi)
 
-- [ ] **T0.1** — `docs/DEPLOY.md` langkah 1: buat project Supabase, jalankan `schema.sql`, verifikasi 7 tabel + RLS aktif
-- [ ] **T0.2** — Buat bucket `audio` (private) dan `covers` (public) + policy-nya
-- [ ] **T0.3** — Buat user lewat Dashboard, **matikan public signup**
+- [x] **T0.1** — `docs/DEPLOY.md` langkah 1: buat project Supabase, jalankan `schema.sql`, verifikasi 7 tabel + RLS aktif
+- [x] **T0.2** — Buat bucket `audio` (private) dan `covers` (public) + policy-nya
+- [x] **T0.3** — Buat user lewat Dashboard, **matikan public signup**
 - [x] **T0.4** — `git init`, `.gitignore` (`public/js/env.js`, `.env*`, `venv/`, `__pycache__/`, `node_modules/`, `media/`)
-- [ ] **T0.5** — Verifikasi `scripts/inject-env.js` + `package.json` + `vercel.json` sudah benar
-- [ ] **T0.6** — Deploy kosong ke Vercel, set `SUPABASE_URL` dan `SUPABASE_ANON_KEY`
-- [ ] **T0.7** — `public/login.html` + auth flow → login berhasil dan sesi bertahan setelah refresh
+- [x] **T0.5** — Verifikasi `scripts/inject-env.js` + `package.json` + `vercel.json` sudah benar
+- [x] **T0.6** — Deploy kosong ke Vercel, set `SUPABASE_URL` dan `SUPABASE_ANON_KEY`
+- [x] **T0.7** — `public/login.html` + auth flow → login berhasil dan sesi bertahan setelah refresh
 
 **Gate:** bisa login di URL Vercel. Tidak ada folder `api/` di repo.
 
