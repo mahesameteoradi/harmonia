@@ -1,4 +1,8 @@
 import { supabase } from '../supabase.js';
+import { getCoverUrl } from '../storage.js';
+import { player } from '../player.js';
+
+let allTracks = [];
 
 export async function renderLibrary(container) {
     container.innerHTML = `
@@ -24,35 +28,21 @@ export async function renderLibrary(container) {
             .order('artist_name', { ascending: true })
             .order('album_name', { ascending: true })
             .order('track_no', { ascending: true })
-            .limit(50);
+            .limit(200);
 
         document.getElementById('library-loading').style.display = 'none';
 
         if (error) throw error;
 
         if (!tracks || tracks.length === 0) {
-            document.getElementById('library-empty').style.display = 'block';
-            document.getElementById('library-empty').innerHTML = `
-                <div class="empty-state fade-in-up">
-                    <div class="empty-state-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
-                            <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-                        </svg>
-                    </div>
-                    <h2>Library Masih Kosong</h2>
-                    <p>Jalankan Scanner Lokal di komputermu untuk mengunggah koleksi musik.</p>
-                    <div class="glass-panel" style="margin-top: 1.5rem; padding: 1rem 1.5rem; font-size: 0.85rem;">
-                        <code>python -m scanner scan --path "D:/Musik"</code>
-                    </div>
-                </div>
-            `;
+            showEmpty();
             return;
         }
 
+        allTracks = tracks;
         const contentEl = document.getElementById('library-content');
         contentEl.style.display = 'block';
         
-        // Header kolom
         let html = `
             <div class="glass-panel fade-in-up" style="padding: 0.5rem 0; overflow: hidden;">
                 <div class="track-row" style="cursor: default; opacity: 0.5; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">
@@ -73,7 +63,7 @@ export async function renderLibrary(container) {
             }
 
             html += `
-                <div class="track-row" data-track-id="${track.id}" style="animation: fadeInUp 0.3s ${i * 0.03}s both;">
+                <div class="track-row" data-track-id="${track.id}" data-index="${i}" style="animation: fadeInUp 0.3s ${Math.min(i * 0.02, 0.5)}s both;">
                     <span class="track-row-num">${i + 1}</span>
                     <div class="track-row-info">
                         <div class="track-row-title">${track.title}</div>
@@ -88,23 +78,36 @@ export async function renderLibrary(container) {
         html += `</div>`;
         contentEl.innerHTML = html;
 
+        // Klik lagu -> mainkan
+        contentEl.querySelectorAll('.track-row[data-index]').forEach(row => {
+            row.addEventListener('click', () => {
+                const idx = parseInt(row.dataset.index);
+                player.setQueue(allTracks, idx);
+            });
+        });
+
     } catch (e) {
         console.error('Gagal memuat library:', e);
         document.getElementById('library-loading').style.display = 'none';
-        document.getElementById('library-empty').style.display = 'block';
-        document.getElementById('library-empty').innerHTML = `
-            <div class="empty-state fade-in-up">
-                <div class="empty-state-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
-                        <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-                    </svg>
-                </div>
-                <h2>Library Masih Kosong</h2>
-                <p>Jalankan Scanner Lokal di komputermu untuk mengunggah koleksi musik.</p>
-                <div class="glass-panel" style="margin-top: 1.5rem; padding: 1rem 1.5rem; font-size: 0.85rem;">
-                    <code>python -m scanner scan --path "D:/Musik"</code>
-                </div>
-            </div>
-        `;
+        showEmpty();
     }
+}
+
+function showEmpty() {
+    const el = document.getElementById('library-empty');
+    el.style.display = 'block';
+    el.innerHTML = `
+        <div class="empty-state fade-in-up">
+            <div class="empty-state-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+                    <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                </svg>
+            </div>
+            <h2>Library Masih Kosong</h2>
+            <p>Jalankan Scanner Lokal di komputermu untuk mengunggah koleksi musik.</p>
+            <div class="glass-panel" style="margin-top: 1.5rem; padding: 1rem 1.5rem; font-size: 0.85rem;">
+                <code>python -m scanner scan --path "D:/Musik"</code>
+            </div>
+        </div>
+    `;
 }
