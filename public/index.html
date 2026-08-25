@@ -17,9 +17,9 @@
             </div>
             
             <nav style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
-                <a href="#" class="nav-link active">🎵 Library</a>
-                <a href="#" class="nav-link">📝 Playlists</a>
-                <a href="#" class="nav-link">⬇️ Import</a>
+                <a href="#library" class="nav-link" data-route="library">🎵 Library</a>
+                <a href="#playlists" class="nav-link" data-route="playlists">📝 Playlists</a>
+                <a href="#import" class="nav-link" data-route="import">⬇️ Import</a>
                 
                 <div style="flex: 1;"></div> <!-- Spacer -->
                 
@@ -27,15 +27,9 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <h1 class="mb-4">Perpustakaan Musik</h1>
-            <p class="text-muted">Koleksi musik Anda akan muncul di sini (T2.3).</p>
-            
-            <div class="glass-panel" style="padding: 2rem; margin-top: 2rem; text-align: center;">
-                <h3 class="text-muted">Library Kosong</h3>
-                <p class="mt-4">Jalankan scanner lokal untuk mengunggah musik Anda.</p>
-            </div>
+        <!-- Main Content (Dynamic SPA Container) -->
+        <main id="main-view" class="main-content">
+            <!-- Isi akan dirender oleh router.js -->
         </main>
     </div>
 
@@ -63,6 +57,10 @@
     <script type="module">
         import { supabase } from '/js/supabase.js';
         import '/js/auth.js'; // Memuat fungsi checkAuth
+        import { initRouter } from '/js/router.js'; // Memuat SPA router
+        
+        // Inisialisasi router
+        initRouter();
         
         // Setup tombol logout
         document.getElementById('logout-btn').addEventListener('click', async (e) => {
