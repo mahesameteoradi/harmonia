@@ -235,7 +235,7 @@ async function saveImport(previewEl) {
         let saved = 0;
         for (let i = 0; i < rows.length; i += 50) {
             const batch = rows.slice(i, i + 50);
-            const { error } = await supabase.table('imported_tracks').upsert(batch, { 
+            const { error } = await supabase.from('imported_tracks').upsert(batch, { 
                 onConflict: 'owner,source_ref',
                 ignoreDuplicates: true 
             });
