@@ -108,11 +108,37 @@
     <!-- Env Vars -->
     <script src="/js/env.js"></script>
     
+    <!-- Mobile sidebar toggle (non-module, HARUS jalan duluan) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('sidebar-overlay');
+            var menuBtn = document.getElementById('menu-toggle');
+
+            if (!menuBtn || !sidebar || !overlay) return;
+
+            function openSidebar()  { sidebar.classList.add('open'); overlay.classList.add('active'); }
+            function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
+
+            menuBtn.addEventListener('click', function() {
+                sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+            });
+            overlay.addEventListener('click', closeSidebar);
+
+            // Tutup sidebar setelah klik navigasi (di HP)
+            document.querySelectorAll('.nav-link[data-route]').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) closeSidebar();
+                });
+            });
+        });
+    </script>
+
     <!-- App Logic (ESM) -->
     <script type="module">
         import { supabase } from '/js/supabase.js';
         import '/js/auth.js';
-        import '/js/player.js'; // Inisialisasi audio player (singleton)
+        import '/js/player.js';
         import { initRouter } from '/js/router.js';
         
         initRouter();
@@ -121,26 +147,6 @@
         document.getElementById('logout-btn').addEventListener('click', async (e) => {
             e.preventDefault();
             await supabase.auth.signOut();
-        });
-
-        // Mobile sidebar toggle
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebar-overlay');
-        const menuBtn = document.getElementById('menu-toggle');
-
-        function openSidebar()  { sidebar.classList.add('open'); overlay.classList.add('active'); }
-        function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
-
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
-        });
-        overlay.addEventListener('click', closeSidebar);
-
-        // Tutup sidebar setelah klik navigasi (di HP)
-        document.querySelectorAll('.nav-link[data-route]').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 768) closeSidebar();
-            });
         });
     </script>
 </body>
