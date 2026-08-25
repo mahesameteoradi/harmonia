@@ -11,13 +11,19 @@
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <h2 class="text-gradient mb-6">Harmonia</h2>
+            <div class="brand-header">
+                <img src="/media/logo.jpg" alt="Harmonia Logo" class="app-logo">
+                <h2 class="text-gradient" style="margin: 0;">Harmonia</h2>
+            </div>
             
-            <nav style="display: flex; flex-direction: column; gap: 1rem;">
-                <a href="#" style="color: var(--text-main); text-decoration: none; font-weight: 500;">🎵 Library</a>
-                <a href="#" style="color: var(--text-muted); text-decoration: none;">📝 Playlists</a>
-                <a href="#" style="color: var(--text-muted); text-decoration: none;">⬇️ Import</a>
-                <a href="#" style="color: var(--text-muted); text-decoration: none; margin-top: auto;" id="logout-btn">🚪 Logout</a>
+            <nav style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+                <a href="#" class="nav-link active">🎵 Library</a>
+                <a href="#" class="nav-link">📝 Playlists</a>
+                <a href="#" class="nav-link">⬇️ Import</a>
+                
+                <div style="flex: 1;"></div> <!-- Spacer -->
+                
+                <a href="#" class="nav-link" id="logout-btn">🚪 Logout</a>
             </nav>
         </aside>
 
