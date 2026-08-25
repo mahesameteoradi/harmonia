@@ -1,0 +1,5 @@
+# Dependency scanner LOKAL. Tidak ikut di-deploy ke Vercel.
+supabase>=2.4
+mutagen>=1.47
+Pillow>=10.2
+requests>=2.31

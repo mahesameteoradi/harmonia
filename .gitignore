@@ -1,0 +1,15 @@
+# Dibuat saat build, jangan di-commit
+public/js/env.js
+
+.env
+.env.local
+.vercel
+node_modules/
+venv/
+__pycache__/
+*.pyc
+media/
+*.log
+.DS_Store
+.idea/
+.vscode/

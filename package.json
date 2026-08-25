@@ -1,0 +1,9 @@
+{
+  "name": "harmonia",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "node scripts/inject-env.js",
+    "dev": "vercel dev"
+  }
+}
